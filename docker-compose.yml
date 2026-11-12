@@ -1,0 +1,98 @@
+services:
+  # -------------------------------------------------------------
+  # 1. Base de données relationnelle et temporelle TimescaleDB (T05)
+  # -------------------------------------------------------------
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: ecosmart-timescaledb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ecosmart}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ecosmart_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-ecosmart_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - timescale_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ecosmart} -d ${POSTGRES_DB:-ecosmart_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # -------------------------------------------------------------
+  # 2. Broker MQTT Mosquitto (T05)
+  # -------------------------------------------------------------
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: ecosmart-mosquitto
+    restart: unless-stopped
+    ports:
+      - "${MQTT_BROKER_PORT:-1883}:1883"
+      - "${MQTT_BROKER_WS_PORT:-9001}:9001"
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  # -------------------------------------------------------------
+  # 3. API Backend FastAPI (T02 / T03 / T09)
+  # -------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecosmart-backend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      APP_NAME: ${APP_NAME:-EcoSmart Campus API}
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-ecosmart}:${POSTGRES_PASSWORD:-ecosmart_secret}@timescaledb:5432/${POSTGRES_DB:-ecosmart_db}
+      SYNC_DATABASE_URL: postgresql://${POSTGRES_USER:-ecosmart}:${POSTGRES_PASSWORD:-ecosmart_secret}@timescaledb:5432/${POSTGRES_DB:-ecosmart_db}
+      MQTT_BROKER_HOST: mosquitto
+      MQTT_BROKER_PORT: 1883
+      SECRET_KEY: ${SECRET_KEY:-supersecret_ecosmart_jwt_key_change_in_production_!}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      LLM_MODEL: ${LLM_MODEL:-mock:demo}
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+
+  # -------------------------------------------------------------
+  # 4. Simulateur de capteurs IoT (T04)
+  # -------------------------------------------------------------
+  simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: ecosmart-simulator
+    restart: unless-stopped
+    environment:
+      MQTT_BROKER_HOST: mosquitto
+      MQTT_BROKER_PORT: 1883
+    depends_on:
+      - mosquitto
+
+  # -------------------------------------------------------------
+  # 5. Frontend React & Vite (T06 / T07)
+  # -------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecosmart-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  timescale_data:
+  mosquitto_data:
+  mosquitto_log:

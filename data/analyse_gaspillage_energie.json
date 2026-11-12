@@ -1,0 +1,53 @@
+{
+  "periode_analyse_jours": 180,
+  "nombre_mesures": 25926,
+  "consommation_totale_kwh": 509451.6,
+  "repartition": {
+    "heures_de_cours_kwh": 333258.34,
+    "heures_de_cours_pct": 65.42,
+    "hors_heures_de_cours_kwh": 176193.26,
+    "hors_heures_de_cours_pct": 34.58
+  },
+  "pic_maximal": {
+    "valeur_kwh": 120.24,
+    "capteur_id": "sensor-elec-batC-labo",
+    "batiment_id": "bat-c",
+    "horodatage": "2026-11-10 15:00:00+00:00"
+  },
+  "gaspillage_estime": {
+    "gaspillage_kwh": 96881.21,
+    "pct_du_total": 19.02,
+    "economies_financieres_estimees_euros": 21313.87,
+    "economies_carbone_estimees_kg_co2": 5328.47
+  },
+  "classement_batiments": [
+    {
+      "batiment_id": "bat-b",
+      "total_kwh": 182292.26,
+      "moyenne_horaire_kwh": 21.09,
+      "pic_kwh": 105.67,
+      "pct_campus": 35.78
+    },
+    {
+      "batiment_id": "bat-a",
+      "total_kwh": 163497.03,
+      "moyenne_horaire_kwh": 18.92,
+      "pic_kwh": 93.17,
+      "pct_campus": 32.09
+    },
+    {
+      "batiment_id": "bat-c",
+      "total_kwh": 120671.91,
+      "moyenne_horaire_kwh": 27.93,
+      "pic_kwh": 120.24,
+      "pct_campus": 23.69
+    },
+    {
+      "batiment_id": "bat-d",
+      "total_kwh": 42990.4,
+      "moyenne_horaire_kwh": 9.95,
+      "pic_kwh": 50.57,
+      "pct_campus": 8.44
+    }
+  ]
+}

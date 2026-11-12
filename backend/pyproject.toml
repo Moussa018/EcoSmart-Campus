@@ -1,0 +1,38 @@
+[project]
+name = "ecosmart-backend"
+version = "0.1.0"
+description = "EcoSmart Campus - Plateforme IoT & IA de pilotage énergétique et environnemental"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "sqlalchemy>=2.0.30",
+    "asyncpg>=0.29.0",
+    "python-jose[cryptography]>=3.3.0",
+    "bcrypt>=4.1.0",
+    "pyyaml>=6.0.0",
+    "paho-mqtt>=2.1.0",
+    "langchain>=0.2.0",
+    "langchain-core>=0.2.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "httpx>=0.27.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["app/tests", "tests"]
+python_files = ["test_*.py"]

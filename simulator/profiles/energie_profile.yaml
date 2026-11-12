@@ -1,0 +1,120 @@
+# ====================================================================
+# EcoSmart Campus - Profil Simulateur Énergie (Sprint 1 - T04 / RNF3)
+# ====================================================================
+
+module: "energie"
+unite: "kWh"
+frequence_publication_secondes: 5
+
+# Coefficients saisonniers mensuels (Janvier -> Décembre)
+# Hiver : chauffage et éclairage plus intenses
+# Printemps/Automne : consommation modérée
+# Été : fermeture partielle du campus
+saisons:
+  1: 1.40   # Janvier (Hiver fort)
+  2: 1.35   # Février
+  3: 1.15   # Mars
+  4: 0.95   # Avril
+  5: 0.85   # Mai
+  6: 0.75   # Juin
+  7: 0.45   # Juillet (Vacances été)
+  8: 0.40   # Août (Fermeture)
+  9: 1.05   # Septembre (Rentrée)
+  10: 1.15  # Octobre
+  11: 1.30  # Novembre
+  12: 1.45  # Décembre (Froid + éclairage)
+
+# Profil horaire en semaine (0h à 23h) - Coefficient multiplicateur du talon
+# Talon de nuit (0h-6h) : 1.0
+# Montée en charge (7h-8h) : 2.5 - 3.8
+# Cours / Pleine activité (8h-12h) : 4.5 - 5.5
+# Pause déjeuner (12h-13h) : 3.8
+# Cours après-midi (13h-18h) : 4.8 - 5.2
+# Fin des cours (18h-20h) : 2.2
+# Fermeture et veille (20h-23h) : 1.2
+profil_horaire_semaine:
+  0: 1.0
+  1: 0.95
+  2: 0.95
+  3: 0.95
+  4: 1.0
+  5: 1.1
+  6: 1.5
+  7: 2.8
+  8: 4.8
+  9: 5.4
+  10: 5.6
+  11: 5.2
+  12: 3.8
+  13: 4.9
+  14: 5.3
+  15: 5.4
+  16: 5.1
+  17: 4.2
+  18: 3.0
+  19: 2.1
+  20: 1.5
+  21: 1.2
+  22: 1.1
+  23: 1.0
+
+# Facteur week-end (Samedi & Dimanche) : activités réduites, pas de cours magistraux
+facteur_weekend:
+  samedi: 0.35
+  dimanche: 0.20
+
+# Capteurs déployés pour le module Énergie
+capteurs:
+  - id: "sensor-elec-batA-01"
+    batiment_id: "bat-a"
+    salle_id: "salle-a-101"
+    nom: "TGBT Bâtiment A - Amphi & TP"
+    puissance_talon_kwh: 8.5
+    bruit_ecart_type: 0.4
+    probabilite_pic_anomalie: 0.02
+    amplitude_pic: 35.0
+
+  - id: "sensor-elec-batA-02"
+    batiment_id: "bat-a"
+    salle_id: "salle-a-201"
+    nom: "Sous-station Labo Électronique Bat A"
+    puissance_talon_kwh: 12.0
+    bruit_ecart_type: 0.6
+    probabilite_pic_anomalie: 0.01
+    amplitude_pic: 25.0
+
+  - id: "sensor-elec-batB-amphi"
+    batiment_id: "bat-b"
+    salle_id: "salle-b-amphi"
+    nom: "Compteur Amphi Turing Bat B"
+    puissance_talon_kwh: 14.5
+    bruit_ecart_type: 0.8
+    probabilite_pic_anomalie: 0.03
+    amplitude_pic: 40.0
+
+  - id: "sensor-elec-batB-td12"
+    batiment_id: "bat-b"
+    salle_id: "salle-b-td12"
+    nom: "Compteur Aile Enseignement Bat B"
+    puissance_talon_kwh: 9.0
+    bruit_ecart_type: 0.5
+    probabilite_pic_anomalie: 0.01
+    amplitude_pic: 20.0
+
+  - id: "sensor-elec-batC-labo"
+    batiment_id: "bat-c"
+    salle_id: "salle-c-labo3"
+    nom: "Alimentation Laboratoires Recherche Bat C"
+    puissance_talon_kwh: 16.0
+    bruit_ecart_type: 0.7
+    probabilite_pic_anomalie: 0.01
+    amplitude_pic: 30.0
+
+  - id: "sensor-elec-batD-hall"
+    batiment_id: "bat-d"
+    salle_id: "salle-d-hall"
+    nom: "Compteur Bâtiment D - Administration"
+    puissance_talon_kwh: 5.5
+    bruit_ecart_type: 0.3
+    probabilite_pic_anomalie: 0.01
+    amplitude_pic: 15.0
