@@ -1,10 +1,10 @@
-# 🌱 EcoSmart Campus - Plateforme IoT & IA
+#  EcoSmart Campus - Plateforme IoT & IA
 
 Plateforme intelligente de pilotage énergétique et environnemental pour campus universitaire (PFA 3A).
 
 ---
 
-## 📌 Livrables du Sprint 1 (Socle & Dérisquage de l'Agent)
+## Livrables du Sprint 1 (Socle & Dérisquage de l'Agent)
 
 | Tâche | Intitulé | Responsable | Statut | Livrables associés |
 |---|---|---|---|---|
@@ -20,7 +20,7 @@ Plateforme intelligente de pilotage énergétique et environnemental pour campus
 
 ---
 
-## 👥 Comptes de démonstration par rôle
+##  Comptes de démonstration par rôle
 
 Le mot de passe par défaut est indiqué pour chaque rôle :
 
@@ -33,7 +33,7 @@ Le mot de passe par défaut est indiqué pour chaque rôle :
 
 ---
 
-## 🚀 Démarrage rapide
+##  Démarrage rapide
 
 ### Option 1 : Lancement avec Docker Compose (Une seule commande)
 ```bash
